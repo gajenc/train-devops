@@ -22,7 +22,7 @@ To encrypt
 ```sh
 $ python encrypt.py <secret text>
 
-NOTE: Salt needs to be available as environment variable called "OPS_SECRET_PASSCODE" which is also added in Jenkins Credentials to decrypt while deploying a service.
+NOTE: Salt needs to be available as environment variable called "EGOV_SECRET_PASSCODE" which is also added in Jenkins Credentials to decrypt while deploying a service.
 
 ```
 

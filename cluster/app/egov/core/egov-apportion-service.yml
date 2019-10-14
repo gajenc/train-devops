@@ -59,6 +59,24 @@ spec:
         image: {{conf['egov-apportion-service']['images'][0]}}
         ports:
         - containerPort: 8080
+        readinessProbe:
+          httpGet:
+            path: /apportion-service/health
+            port: 8080
+          initialDelaySeconds: 60
+          timeoutSeconds: 3
+          periodSeconds: 30
+          successThreshold: 1
+          failureThreshold: 5
+        livenessProbe:
+          httpGet:
+            path: /apportion-service/health
+            port: 8080
+          initialDelaySeconds: 60
+          timeoutSeconds: 3
+          periodSeconds: 60
+          successThreshold: 1
+          failureThreshold: 5        
         env:
         - name: SPRING_DATASOURCE_URL
           valueFrom:
@@ -107,6 +125,8 @@ spec:
               key: timezone
         - name: JAVA_OPTS
           value: "{{conf['egov-apportion-service']['heap'] or '-Xmx256m -Xms256m'}}"
+        - name: JAVA_ARGS
+          value: "{{conf['egov-apportion-service']['java-args']}}"          
         - name: SPRING_JPA_SHOW_SQL
           value: "{{conf['egov-config']['spring-jpa-show-sql']}}"
         - name: SERVER_PORT

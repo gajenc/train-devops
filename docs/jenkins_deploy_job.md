@@ -16,7 +16,7 @@
      - <env>-kube-key
      - <env>-kube-token #For token based auth only
      - <env>-kube-url
-     - OPS_SECRET_PASSCODE  #Which was used to encrypt passwords in environment manifests
+     - egov_secret_passcode  #Which was used to encrypt passwords in environment manifests
  - Groovy script then executes python script apply.py with the arguments env, service, docker_image:tag, docker_db_migration_image:tag
  - apply.py reads all arguments and renders following yaml's
      - namespaces.yml

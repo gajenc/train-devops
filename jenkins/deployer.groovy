@@ -26,19 +26,19 @@ def run(env, cmd){
         set_kube_config(env)
 
 // aws auth, inject aws specific keys        
-        if (env == "pbuatv2" || env == "ukdProd" || env == "ukdUat") {
+        if (env == "pbuatv2" || env == "ukdProd" || env == "pbprod") {
             
             withCredentials([
                 string(credentialsId: "${env}-aws-access-key", variable: "AWS_ACCESS_KEY"),
                 string(credentialsId: "${env}-aws-secret-access-key", variable: "AWS_SECRET_ACCESS_KEY"),
                 string(credentialsId: "${env}-aws-region", variable: "AWS_REGION"),
-                string(credentialsId: "OPS_SECRET_PASSCODE", variable: "OPS_SECRET_PASSCODE")
+                string(credentialsId: "egov_secret_passcode", variable: "EGOV_SECRET_PASSCODE")
             ]){
                 sh cmd;
             }
     } else{
             withCredentials([
-                string(credentialsId: "OPS_SECRET_PASSCODE", variable: "OPS_SECRET_PASSCODE")
+                string(credentialsId: "egov_secret_passcode", variable: "EGOV_SECRET_PASSCODE")
             ]){
                 sh cmd;
             }        

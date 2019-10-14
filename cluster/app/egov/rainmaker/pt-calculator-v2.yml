@@ -158,6 +158,14 @@ spec:
         - name: CUSTOM_PB_ZERO_ASSESSMENT_TENANTID
           value: "{{conf['pt-calculator-v2']['CUSTOM_PB_ZERO_ASSESSMENT_TENANTID'] or ''}}"
 {% endif %}
+{% if conf['pt-calculator-v2']['custom-pb-firecess-logic'] %}
+        - name: CUSTOMIZATION_PBFIRECESSLOGIC
+          value: "{{conf['pt-calculator-v2']['custom-pb-firecess-logic']}}"
+{% endif %}
+        - name: CUSTOMIZATION_ALLOWDEPRECIATIONONNORECEIPTS
+          value: "{{conf['pt-calculator-v2']['allow-depreciations'] or 'false'}}"
+        - name: CUSTOMIZATION_UNBUILTAREA_PRORATED
+          value: "{{conf['pt-calculator-v2']['unbuiltarea-prorated'] or 'false'}}"
         - name: JAVA_OPTS
           value: "{{conf['pt-calculator-v2']['heap'] or '-Xmx192m -Xms192m'}}"
         - name: JAVA_ARGS
@@ -190,8 +198,8 @@ spec:
         - name: TRACER_OPENTRACING_ENABLED
           value: "true" 
 {% endif %}                     
-        # resources:
-        #   requests:
-        #     memory: "64Mi"
-        #   limits:
-        #     memory : "{{conf['pt-calculator-v2']['memory_limits'] or "512Mi"}}"
+        resources:
+          requests:
+            memory: "{{conf['pt-calculator-v2']['memory_limits'] or "512Mi"}}"
+          limits:
+            memory : "{{conf['pt-calculator-v2']['memory_limits'] or "512Mi"}}"

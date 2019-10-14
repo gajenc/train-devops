@@ -18,7 +18,7 @@ parser = argparse.ArgumentParser()
 
 
 def decrypt(text):
-    key = os.environ["OPS_SECRET_PASSCODE"]
+    key = os.environ["EGOV_SECRET_PASSCODE"]
     decryptor = AES.new(key, AES.MODE_ECB)
     return decryptor.decrypt(base64.b64decode(text)).strip()
 
@@ -55,6 +55,8 @@ def parse_args():
                         action="store_true")
     parser.add_argument("-vol", "--with_volumes", help="Attach volumes to manifest",
                         action="store_true")
+    parser.add_argument("-ing", "--with_ingress", help="Deploy ingress",
+                        action="store_true")                        
     parser.add_argument("-all", "--all", help="Apply all manifests across all namespaces",
                         action="store_true")
 
@@ -94,6 +96,7 @@ def render_env_props(args):
 
 
 def apply_manifest(manifest):
+    manifest = manifest.encode('utf-8').strip()
     with tempfile.NamedTemporaryFile() as temp:
         temp.write(manifest)
         temp.flush()
@@ -107,6 +110,7 @@ def apply_manifest(manifest):
                             format(out, err))
 
 def apply_manifest_win(manifest):
+    manifest = manifest.encode('utf-8').strip()    
     with tempfile.NamedTemporaryFile(delete=False) as temp:
         temp.write(manifest)
         temp.seek(0)
@@ -164,6 +168,9 @@ def main():
             render_manifest(args, manifest_path="{}/../cluster/secrets.yml".format(cwd)))
     if args.with_volumes:
         applicable_manifests.append(render_manifest(args, manifest_path="{}/../cluster/volumes.yml".format(cwd)))
+
+    if args.with_ingress:
+        applicable_manifests.append(render_manifest(args, manifest_path="{}/../cluster/ingress.yml".format(cwd)))        
 
     if args.all:
         for manifest, path in get_all_manifests():

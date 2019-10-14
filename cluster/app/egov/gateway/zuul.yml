@@ -249,10 +249,7 @@ spec:
         - name: SERVER_TOMCAT_MAX_CONNECTIONS
           value: "{{ conf['zuul']['server-tomcat-max-connections'] }}"
         - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
-          valueFrom:
-            configMapKeyRef:
-              name: egov-config
-              key: kafka-brokers
+          value: "{{ conf['kafka-config']['kafka-infra-brokers'] }}"
         - name: SPRING_KAFKA_CONSUMER_VALUE_DESERIALIZER
 #          value: org.egov.tracer.kafka.deserializer.HashMapDeserializer
           value: org.egov.kafka.HashMapDeserializer
@@ -271,6 +268,12 @@ spec:
           value: "{{ conf['zuul-config']['egov-open-endpoints-whitelist'] }}"
         - name: EGOV_MIXED_MODE_ENDPOINTS_WHITELIST
           value: "{{ conf['zuul-config']['egov-mixed-mode-endpoints-whitelist'] }}"
+        - name: EVENTLOG_ENABLED
+          value: "{{ conf['zuul-config']['eventlog-enabled'] or 'false' }}"
+        - name: EVENTLOG_TOPIC
+          value: "{{ conf['zuul-config']['eventlog-topic'] or 'zuul-event-log' }}"
+        - name: EVENTLOG_URLS_WHITELIST
+          value: "{{ conf['zuul-config']['eventlog-urls-whitelist'] or '' }}"
 {% endif %}
         - name: EGOV_AUTHORIZE_ACCESS_CONTROL_HOST
           value: "{{conf['egov-service-host']['egov-accesscontrol']}}"

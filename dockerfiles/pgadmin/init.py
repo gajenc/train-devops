@@ -1,4 +1,4 @@
-from pgadmin4.pgAdmin4 import app
+from pgAdmin4 import app
 import os
 import simplejson as json
 import re
@@ -34,47 +34,14 @@ def load_envs():
         return dict
 
 
-def clear_existing_users():
-    db.engine.execute(""" DELETE FROM "user" """)
-
-
 def insert_user(envs, encryptedPwd):
     db.engine.execute(
-        """ INSERT INTO "user"(id, email, password, active, masterpass_check) VALUES(2, '%s', '%s', 1, NULL) """ % (envs["pgAdminReadEmail"], encryptedPwd))
+        """ INSERT INTO "user" VALUES(2, '%s', '%s', 1, NULL) """ % (envs["pgAdminReadEmail"], encryptedPwd))
 
     db.engine.execute("""
-        INSERT INTO "roles_users"
-        VALUES(2, 2);
+INSERT INTO "roles_users"
+VALUES(2, 2);
     """)
-
-
-def set_user_preferences(user_id):
-    db.engine.execute("""
-    INSERT INTO user_preferences VALUES
-    (93,{user_id},'en'),
-    (33,{user_id},'False'),
-    (34,{user_id},'False'),
-    (5,{user_id},'False'),
-    (42,{user_id},'False'),
-    (37,{user_id},'False'),
-    (44,{user_id},'False'),
-    (45,{user_id},'False'),
-    (48,{user_id},'False'),
-    (2,{user_id},'False'),
-    (49,{user_id},'False'),
-    (56,{user_id},'False'),
-    (54,{user_id},'False'),
-    (50,{user_id},'False'),
-    (69,{user_id},'False'),
-    (75,{user_id},'False'),
-    (88,{user_id},'False'),
-    (90,{user_id},'False'),
-    (64,{user_id},'False'),
-    (55,{user_id},'False'),
-    (47,{user_id},'False'),
-    (43,{user_id},'False'),
-    (87,{user_id},'False');
-    """.format(user_id=user_id))
 
 
 def insert_servers(envs):
@@ -102,12 +69,8 @@ if __name__ == '__main__':
     envs = load_envs()
 
     with app.app_context():
-
         encryptedPwd = encrypt_password(envs["pgAdminReadPassword"])
 
         insert_user(envs, encryptedPwd)
-
-        set_user_preferences(1)
-        set_user_preferences(2)
 
         insert_servers(envs)

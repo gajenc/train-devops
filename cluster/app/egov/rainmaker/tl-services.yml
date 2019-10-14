@@ -178,9 +178,9 @@ spec:
         - name: SERVER_PORT
           value: "8080"
         - name: EGOV_IDGEN_TL_APPLICATIONNUM_FORMAT
-          value: "{{conf['egov-config']['tl-application-num-format']}}"
+          value: "{{conf['tl-services']['tl-application-num-format']}}"
         - name: EGOV_IDGEN_TL_LICENSENUMBER_FORMAT
-          value: "{{conf['egov-config']['tl-license-num-format']}}"
+          value: "{{conf['tl-services']['tl-license-num-format']}}"
         - name: JAEGER_SERVICE_NAME
           value: tl-services
         - name: JAEGER_SAMPLER_TYPE
@@ -197,6 +197,18 @@ spec:
           value: "false"  
         - name: MANAGEMENT_SECURITY_ENABLED
           value: "false"     
+        - name: EGOV_USER_EVENT_NOTIFICATION_ENABLED
+          value: "true"
+        - name: EGOV_UI_APP_HOST
+          value: "{{conf['egov-config']['egov-services-fqdn-name']}}"
+        - name: EGOV_USR_EVENTS_CREATE_TOPIC
+          value: "persist-user-events-async"
+        - name: EGOV_USR_EVENTS_PAY_LINK
+          value: "citizen/otpLogin?mobileNo=$mobile&redirectTo=tradelicense-citizen/pay?applicationNumber=$applicationNo&tenantId=$tenantId&businessService=TL"
+        - name: EGOV_USR_EVENTS_PAY_CODE
+          value: "PAY"
+        - name: EGOV_USR_EVENTS_PAY_TRIGGERS
+          value: "PENDINGPAYMENT"          
 {% if conf['tl-services']['tracing-enabled']%}          
         - name: TRACER_OPENTRACING_ENABLED
           value: "true" 
@@ -205,8 +217,8 @@ spec:
         - name: TRACER_ERRORS_PROVIDEEXCEPTIONINDETAILS
           value: "{{conf['egov-config']['tracer-errors-provideexceptionindetails']}}"
 {% endif %}
-        # resources:
-        #   requests:
-        #     memory: "64Mi"
-        #   limits:
-        #     memory: "{{ conf['tl-services']['memory_limits'] or "512Mi"}}"
+        resources:
+          requests:
+            memory: "{{ conf['tl-services']['memory_limits'] or "512Mi"}}"
+          limits:
+            memory: "{{ conf['tl-services']['memory_limits'] or "512Mi"}}"

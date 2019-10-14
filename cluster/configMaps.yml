@@ -198,7 +198,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: es-curator-config
-  namespace: es-cluster
+  namespace: es-cluster-infra
 data:
   action_file.yml: |-
     ---
@@ -276,24 +276,26 @@ data:
       logformat: default
       blacklist: ['elasticsearch', 'urllib3']
 {% endif %}
-{% if conf['nginx']['nginx-global-configs-injection-enabled'] %}
+{% if conf['citizen']['custom-js-injection'] %}
+---
 apiVersion: v1
-data:
-  globalConfigs.js: |-
-    var globalConfigs = (function() {
-        var stateTenantId = '{{conf['egov-config']['egov-state-level-tenant-id']}}'
-        var getConfig = function(key) {
-            if(key === 'STATE_LEVEL_TENANT_ID'){
-                return stateTenantId;
-            }
-        };
-        return {
-            getConfig
-        };
-    }());
+data: 
+{{conf['citizen']['custom-js-injection'] | indent(2, True)}}
+
 kind: ConfigMap
 metadata:
-  name: nginx-globalconfigs-injection
+  name: citizen-js-injection
+  namespace: egov
+{% endif %}
+{% if conf['citizen']['custom-js-injection'] %}
+---
+apiVersion: v1
+data: 
+{{conf['employee']['custom-js-injection'] | indent(2, True)}}
+
+kind: ConfigMap
+metadata:
+  name: employee-js-injection
   namespace: egov
 {% endif %}
 {% if conf['es-master-infra-v1'] %}

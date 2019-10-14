@@ -21,6 +21,10 @@ metadata:
   namespace: egov
 spec:
   replicas: {{conf['egov-persister']['replicas']}}
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+    type: RollingUpdate  
   template:
     metadata:
       labels:
@@ -32,6 +36,24 @@ spec:
         image: {{conf['egov-persister']['images'][0]}}
         ports:
         - containerPort: 8080
+        readinessProbe:
+          httpGet:
+            path: /common-persist/health
+            port: 8080
+          initialDelaySeconds: 60
+          timeoutSeconds: 3
+          periodSeconds: 30
+          successThreshold: 1
+          failureThreshold: 5
+        livenessProbe:
+          httpGet:
+            path: /common-persist/health
+            port: 8080
+          initialDelaySeconds: 60
+          timeoutSeconds: 3
+          periodSeconds: 60
+          successThreshold: 1
+          failureThreshold: 5        
         env:
         - name: SPRING_DATASOURCE_URL
           valueFrom:
@@ -64,6 +86,8 @@ spec:
               key: timezone
         - name: JAVA_OPTS
           value: "{{conf['egov-persister']['heap'] or '-Xmx192m -Xms192m'}}"
+        - name: JAVA_ARGS
+          value: "{{conf['egov-persister']['java-args']}}"          
         - name: SERVER_PORT
           value: "8080"
         - name: SERVER_TOMCAT_MAX_THREADS
