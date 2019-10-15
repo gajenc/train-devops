@@ -3,7 +3,7 @@
 #
 
 variable "cluster_name" {
-  default = "ukd-micro-uat"
+  default = "state-micro-uat" #Replace this value with yours
 }
 
 variable "vpc_cidr_block" {
@@ -28,5 +28,5 @@ variable "number_of_worker_nodes" {
 }
 
 variable "ssh_key_name" {
-  default = "ukd-uat-ssh"
+  default = "state-uat-ssh"  #Replace the value with yours
 }

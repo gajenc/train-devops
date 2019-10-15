@@ -1,10 +1,10 @@
 variable "environment" {
-    default = "bihar-uat"
+    default = "state-uat" #Replace this value
 }
 variable "resource_group" {
-    default = "bihar-uat"
+    default = "state-uat" #Replace this value
 }
 
 variable "location" {
-    default = "CentralIndia"
+    default = "CentralIndia" #Replace this value if you want it in a different zone
 }

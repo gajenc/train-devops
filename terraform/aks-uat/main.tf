@@ -70,17 +70,17 @@ module "es-data-v1" {
 
 module "postgres-db" {
   source = "../modules/db/azure"
-  server_name = "bihar-uat-db"
+  server_name = "" # mention the name of your DB Instance
   resource_group = "${module.kubernetes.node_resource_group}"  
   sku_cores = "2"
   location = "${azurerm_resource_group.resource_group.location}"
   sku_tier = "Basic"
   storage_mb = "51200"
   backup_retention_days = "7"
-  administrator_login = "biharuat"
-  administrator_login_password = "62bQA8E2By6wcUUz"
+  administrator_login = ""  # mention DB username
+  administrator_login_password = "" # mention the DB password
   ssl_enforce = "Disabled"
-  db_name = "bihar_uat_db"
+  db_name = "" # mention the DB Name
   environment= "${var.environment}"
   
 }
