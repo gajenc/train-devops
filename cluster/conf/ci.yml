@@ -1,0 +1,14 @@
+jenkins:
+  admin-username: ""   #Bootsrap UID
+  admin-password: ""   #Bootsrap PWD 
+  github-client-id: ""  #Github OAuth
+  github-client-secret: ""
+  git-read-ssh-private-key: ""
+
+nginx-ingress:
+  images:
+    - quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.25.1
+  default-backend-service: "jenkins/jenkins"  
+
+cert-manager:
+  email: "admin@organisation.com"  
